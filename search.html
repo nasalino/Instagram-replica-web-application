@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <title>Search a new EV here</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
+  <style>
+  .insta {font-family: Comic Sans MS, cursive, sans-serif;}
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ logout_url }}">Logout</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/edituser">Edit Profile</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/addpost">Add post</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/profilepage?key={{ myuser.key.string_id() }}">Profile page</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/search">Search</a>
+      </li>
+    </ul>
+  </nav>
+  <br />
+
+  <p class=" text-center "> <i class="fab fa-instagram" style="font-size:36px"> <span class="insta">instagram</span></i></p>
+
+  <div class="d-flex flex-column text-center">
+
+      <h1 class=" text-center display-4"> Search a user below</h1>
+<br />
+  <br />
+  <form method="post" action="/search">
+
+    Name: <input type="text" name="name" /><br />
+    <br />
+
+    <input type="submit" value="Search" name="button"  class="btn btn-primary"/>
+  </form>
+
+
+  <br/>
+  {% for i in search_list %}
+  <br/>
+  Name: <a href='/profilepage?key={{ i.key.string_id() }}'> {{ i.name }} </a><br />
+  {% endfor %}
+
+  <br />
+
+</div>
+
+</body>
+
+</html>

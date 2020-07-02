@@ -1,0 +1,143 @@
+<html>
+
+<head>
+  <title>Welcome to your Instagram</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta charset="utf-8" />
+  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <style>
+  .insta {font-family: Comic Sans MS, cursive, sans-serif;}
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{{ logout_url }}">Logout</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/edituser">Edit Profile</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/addpost">Add post</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/profilepage?key={{ myuser.key.string_id() }}">Profile page</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="/search">Search</a>
+      </li>
+    </ul>
+  </nav>
+<br/> <br/>
+  <p class=" text-center "> <i class="fab fa-instagram" style="font-size:36px"> <span class="insta">instagram</span></i></p>
+
+  <h1 class=" text-center display-4"> Profile Page</h1>
+  <br />
+  <div class="container ">
+
+    <div class="column  ">
+
+
+      <div class="col-sm-6 col-md-4 col-xs-6 mx-auto">
+        <br />
+
+
+        {%if other_user != myuser%}
+    <div class="text-center">
+
+        <form method="post" action="profilepage?key={{ other_user.key.string_id() }}">
+        {%if other_user_key in myuser.following_list%}
+
+
+          <input type="submit" value="Unfollow" name="button" class="btn btn-primary" /><br />
+          {%else%}
+          <input type="submit" value="Follow" name="button" class="btn btn-primary" />
+          {%endif%}
+
+        </form>
+
+</div>
+        {%endif%}
+
+
+
+
+            {%set  myuser = other_user%}
+<div class="text-center">
+
+
+        User Name: {{myuser.name}}<br />
+<a  href="/followlist?key={{ myuser.key.string_id() }}-followings" >  Following:{{myuser.following_list|length}}</a>&nbsp &nbsp
+
+<a  href="/followlist?key={{ myuser.key.string_id() }}-followers" >   Followers:{{myuser.followers_list|length}}</a>
+
+</div>
+
+
+        <br />
+
+        <br />
+
+        {% for i in posts %}<br/><br/>
+        <i class='far fa-smile' style='font-size:24px'></i>&nbsp &nbsp<strong>{{i.get().user.get().name}}    &nbsp &nbsp      <span class= "text-muted">Posted at   {{i.get().hour}}</strong><br/>
+    </span>
+
+        <img src="{{get_serving_url(i.get().blob)}}" class="img-fluid" alt="">
+
+    <br/><br/>
+        <a data-toggle="collapse" href="#{{ i }}" aria-expanded="false" aria-controls="{{ i }}"> <i class='far fa-comments text-dark' style='font-size:24px' ></i></a>&nbsp&nbsp<i class='fas fa-heart' style='font-size:24px'></i>
+
+
+        <p><span class="font-weight-bold ">{{i.get().user.get().name}} </span> {{i.get().caption}}</p>
+
+
+
+
+
+          <span class= "text-muted">comments..</span><br/>
+          <div class="collapse multi-collapse" id="{{i}}">
+              <form action="/?key={{i.get().key.id()}}" method="post">
+                <input type="text" name="comment" maxlength="200" />
+                <input type="submit" value="post" name="button" class="btn btn-secondary" />
+
+              </form>
+            </div>
+
+            {%set comment_count = 0%}
+        {% for comments in i.get().comments[::-1][:5]  %}
+
+    <span class="font-weight-bold ">{{comments.comment_user.get().name}} </span> {{ comments.text }}<br/>
+    {%set comment_count = comment_count+1%}
+    {%if comment_count == 5 %}
+    <br/>
+    <a class="btn btn-dark" href="/viewcomments?key={{i.get().key.id()}}" role="button">Expand</a>
+
+    {%endif%}
+        {% endfor %}
+<hr/><hr/>
+        {% endfor %}
+        <br />
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
